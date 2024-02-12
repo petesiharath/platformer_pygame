@@ -26,7 +26,7 @@ class Game:
         self.player = PhysicsEntity(self, "player", (50, 50), (8, 15))
         self.playerMovement = [0, 0]
 
-        self.tilemap = Tilemap(self, tileSize=16)
+        self.tilemap = Tilemap(self, tile_size=16)
 
     def run(self):
         while True:
@@ -45,12 +45,14 @@ class Game:
                     sys.exit()
                 
                 if event.type == pygame.KEYDOWN:
+
                     if event.key == pygame.K_a:
                         self.playerMovement[0] = 1
                     if event.key == pygame.K_d:
                         self.playerMovement[1] = 1
-                
+
                 if event.type == pygame.KEYUP:
+
                     if event.key == pygame.K_a:
                         self.playerMovement[0] = 0
                     if event.key == pygame.K_d:
