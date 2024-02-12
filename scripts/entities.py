@@ -15,4 +15,4 @@ class PhysicsEntity:
         self.position[1] += frame_movement[1]
 
     def render(self, surface):
-        surface.blit(self.game.assets["player"], self.pos)
+        surface.blit(self.game.assets["player"], self.position)
