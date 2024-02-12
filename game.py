@@ -35,7 +35,7 @@ class Game:
 
             self.tilemap.render(self.display)
 
-            self.player.update((self.playerMovement[1] - self.playerMovement[0], 0))
+            self.player.update(self.tilemap, (self.playerMovement[1] - self.playerMovement[0], 0))
             self.player.render(self.display)
 
             for event in pygame.event.get():
@@ -50,6 +50,8 @@ class Game:
                         self.playerMovement[0] = 1
                     if event.key == pygame.K_d:
                         self.playerMovement[1] = 1
+                    if event.key == pygame.K_w:
+                        self.player.velocity[1] = -3
 
                 if event.type == pygame.KEYUP:
 
