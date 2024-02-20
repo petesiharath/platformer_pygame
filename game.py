@@ -4,6 +4,7 @@ import sys
 from scripts.entities import PhysicsEntity
 from scripts.utilities import load_image, load_images
 from scripts.tilemap import Tilemap
+from scripts.utilities import Animation
 
 class Game:
     def __init__(self):
@@ -20,7 +21,10 @@ class Game:
             "largeDecor": load_images("tiles/large_decor"),
             "grass": load_images("tiles/grass"),
             "stone": load_images("tiles/stone"),
-            "player": load_image("entities/player.png")
+            "player": load_image("entities/player.png"),
+            "background": load_image("background.png"),
+            "clouds": load_images("clouds"),
+            "player/idle": Animation(load_images("entities/player/idle"), image_duration=6)
         }
 
         self.player = PhysicsEntity(self, "player", (50, 50), (8, 15))

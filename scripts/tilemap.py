@@ -3,7 +3,9 @@ import pygame
 NEIGHBOUR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
 PHYSICS_TILES = {"grass", "stone"}
 
+
 class Tilemap:
+
     def __init__(self, game, tile_size=16):
 
         self.game = game
@@ -14,6 +16,7 @@ class Tilemap:
         for i in range(10):
             self.tilemap[str(3 + i) + ";10"] = {"type": "grass", "variant": 1, "position": (3 + i, 10)}
             self.tilemap["10;" + str(5 + i)] = {"type": "stone", "variant": 1, "position": (10, 5 + i)}
+
 
     def tiles_around(self, position):
 
@@ -28,6 +31,7 @@ class Tilemap:
 
         return tiles
     
+
     def physics_rects_around(self, position):
 
         rects = []
@@ -38,12 +42,15 @@ class Tilemap:
         
         return rects
     
-    def render(self, surface):
+
+    def render(self, surface, offset=(0, 0)):
 
         for tile in self.offgrid_tiles:
             surface.blit(self.game.assets[tile["type"]][tile["variant"]], tile["position"])
 
-        for location in self.tilemap:
-            tile = self.tilemap[location]
-            surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"][0] * self.tile_size, tile["position"][1] * self.tile_size))
-
+        for x in range(offset[0] // self.tile_size, (offset[0] + surface.get_width()) // self.tile_size + 1):
+            for y in range(offset[1] // self.tile_size, (offset[1] + surface.get_height()) // self.tile_size + 1):
+                location = str(x) + ";" + str(y)
+                if location in self.tilemap:
+                    tile = self.tilemap[location]
+                    surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"][0] * self.tile_size, tile["position"][1] * self.tile_size))
