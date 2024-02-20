@@ -4,6 +4,7 @@ import sys
 from scripts.entities import PhysicsEntity
 from scripts.utilities import load_image, load_images
 from scripts.tilemap import Tilemap
+from scripts.clouds import Clouds
 from scripts.utilities import Animation
 
 class Game:
@@ -27,6 +28,8 @@ class Game:
             "player/idle": Animation(load_images("entities/player/idle"), image_duration=6)
         }
 
+        self.clouds = Clouds(self.assets["clouds"], count=16)
+
         self.player = PhysicsEntity(self, "player", (50, 50), (8, 15))
         self.playerMovement = [0, 0]
 
@@ -42,6 +45,9 @@ class Game:
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
             self.scroll[1] += (self.player.rect().centery - self.display.get_height() / 2 - self.scroll[1]) / 30
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
+
+            self.clouds.update()
+            self.clouds.render(self.display, offset=render_scroll)
 
             self.tilemap.render(self.display, offset=render_scroll)
 
