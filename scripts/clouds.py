@@ -1,6 +1,7 @@
 import random
 
 class Cloud:
+    
     def __init__(self, position, image, speed, depth):
 
         self.position = list(position)
@@ -21,6 +22,7 @@ class Cloud:
 
 
 class Clouds:
+
     def __init__(self, cloud_images, count=16):
 
         self.clouds = []
