@@ -1,14 +1,17 @@
 import pygame
 import sys
 
-from scripts.entities import PhysicsEntity
-from scripts.utilities import load_image, load_images
+
+from scripts.entities import PhysicsEntity, Player
+from scripts.utilities import load_image, load_images, Animation
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
-from scripts.utilities import Animation
+
 
 class Game:
+
     def __init__(self):
+
         pygame.init()
 
         pygame.display.set_caption("Platformer")
@@ -25,19 +28,25 @@ class Game:
             "player": load_image("entities/player.png"),
             "background": load_image("background.png"),
             "clouds": load_images("clouds"),
-            "player/idle": Animation(load_images("entities/player/idle"), image_duration=6)
+            "player/idle": Animation(load_images("entities/player/idle"), image_duration=6),
+            "player/run": Animation(load_images("entities/player/run"), image_duration=4),
+            "player/jump": Animation(load_images("entities/player/jump")),
+            "player/slide": Animation(load_images("entities/player/slide")),
+            "player/wall_slide": Animation(load_images("entities/player/wall_slide"))
         }
 
         self.clouds = Clouds(self.assets["clouds"], count=16)
 
-        self.player = PhysicsEntity(self, "player", (50, 50), (8, 15))
+        self.player = Player(self, (50, 50), (8, 15))
         self.playerMovement = [0, 0]
 
         self.tilemap = Tilemap(self, tile_size=16)
 
         self.scroll = [0, 0]
 
+
     def run(self):
+
         while True:
             
             self.display.blit(self.assets["background"], (0, 0))
