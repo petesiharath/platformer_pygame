@@ -71,19 +71,19 @@ class Game:
                 
                 if event.type == pygame.KEYDOWN:
 
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.playerMovement[0] = 1
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.playerMovement[1] = 1
-                    if event.key == pygame.K_w and self.player.onfloor:
+                    if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.player.onfloor:
                         self.player.velocity[1] = -3
                         self.player.onfloor = False
 
                 if event.type == pygame.KEYUP:
 
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.playerMovement[0] = 0
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.playerMovement[1] = 0
 
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))

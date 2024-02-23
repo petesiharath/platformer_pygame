@@ -107,26 +107,26 @@ class Editor:
 
                 if event.type == pygame.KEYDOWN:
 
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.camera_movement[0] = 1
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.camera_movement[1] = 1
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.camera_movement[2] = 1
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.camera_movement[3] = 1
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
 
                 if event.type == pygame.KEYUP:
 
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.camera_movement[0] = 0
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.camera_movement[1] = 0
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.camera_movement[2] = 0
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.camera_movement[3] = 0
                     if event.key == pygame.K_LSHIFT:
                         self.shift = False
