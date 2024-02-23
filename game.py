@@ -50,6 +50,12 @@ class Game:
         self.leaf_spawners = []
         for tree in self.tilemap.extract([("large_decor", 2)], keep=True):
             self.leaf_spawners.append(pygame.Rect(4 + tree["position"][0], 4 + tree["position"][1], 23, 13))
+
+        for spawner in self.tilemap.extract([("spawners", 0), ("spawners", 1)]):
+            if spawner["variant"] == 0:
+                self.player.position = spawner["position"]
+            else:
+                print(spawner["position"], "enemy")
         
         self.particles = []
 

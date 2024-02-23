@@ -23,7 +23,8 @@ class Editor:
             "decor": load_images("tiles/decor"),
             "large_decor": load_images("tiles/large_decor"),
             "grass": load_images("tiles/grass"),
-            "stone": load_images("tiles/stone")
+            "stone": load_images("tiles/stone"),
+            "spawners": load_images("tiles/spawners")
         }
 
         self.camera_movement = [0, 0, 0, 0]
