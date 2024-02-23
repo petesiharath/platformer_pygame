@@ -64,6 +64,14 @@ class Tilemap:
         return tiles
     
 
+    def solid_check(self, position):
+
+        tile_location = str(int(position[0] // self.tile_size)) + ";" + str(int(position[1] // self.tile_size))
+        if tile_location in self.tilemap:
+            if self.tilemap[tile_location]["type"] in PHYSICS_TILES:
+                return self.tilemap[tile_location]
+    
+
     def physics_rects_around(self, position):
 
         rects = []
