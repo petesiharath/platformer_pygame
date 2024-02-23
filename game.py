@@ -100,7 +100,7 @@ class Game:
                         self.player_movement[0] = 1
                     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.player_movement[1] = 1
-                    if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
                         self.player.jump()
                     if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
                         self.player.dash()
