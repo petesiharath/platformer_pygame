@@ -26,7 +26,7 @@ class Editor:
             "stone": load_images("tiles/stone")
         }
 
-        self.cameraMovement = [0, 0, 0, 0]
+        self.camera_movement = [0, 0, 0, 0]
 
         self.tilemap = Tilemap(self, tile_size=16)
 
@@ -47,6 +47,8 @@ class Editor:
             
             self.display.fill((0, 0, 0))
 
+            self.scroll[0] += (self.camera_movement[1] - self.camera_movement[0]) * 2
+            self.scroll[1] += (self.camera_movement[3] - self.camera_movement[2]) * 2
             render_scroll = (int(self.scroll[0]), int(self.scroll[1]))
 
             self.tilemap.render(self.display, offset=render_scroll)
@@ -58,8 +60,11 @@ class Editor:
             mouse_position = (mouse_position[0] / RENDER_SCALE, mouse_position[1] / RENDER_SCALE)
             tile_position = (int((mouse_position[0] + self.scroll[0]) // self.tilemap.tile_size), int((mouse_position[1] + self.scroll[1]) // self.tilemap.tile_size))
 
+            self.display.blit(current_tile_image, (tile_position[0] * self.tilemap.tile_size - self.scroll[0], tile_position[1] * self.tilemap.tile_size - self.scroll[1]))
+
             if self.clicking:
                 self.tilemap.tilemap[str(tile_position[0]) + ";" + str(tile_position[1])] = {"type": self.tile_list[self.tile_group], "variant": self.tile_variant, "position": (tile_position)}
+
             if self.right_clicking:
                 tile_location = str(tile_position[0]) + ";" + str(tile_position[1])
                 if tile_location in self.tilemap.tilemap:
@@ -103,26 +108,26 @@ class Editor:
                 if event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_a:
-                        self.cameraMovement[0] = 1
+                        self.camera_movement[0] = 1
                     if event.key == pygame.K_d:
-                        self.cameraMovement[1] = 1
+                        self.camera_movement[1] = 1
                     if event.key == pygame.K_w:
-                        self.cameraMovement[2] = 1
+                        self.camera_movement[2] = 1
                     if event.key == pygame.K_s:
-                        self.cameraMovement[3] = 1
+                        self.camera_movement[3] = 1
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
 
                 if event.type == pygame.KEYUP:
 
                     if event.key == pygame.K_a:
-                        self.cameraMovement[0] = 0
+                        self.camera_movement[0] = 0
                     if event.key == pygame.K_d:
-                        self.cameraMovement[1] = 0
+                        self.camera_movement[1] = 0
                     if event.key == pygame.K_w:
-                        self.cameraMovement[2] = 0
+                        self.camera_movement[2] = 0
                     if event.key == pygame.K_s:
-                        self.cameraMovement[3] = 0
+                        self.camera_movement[3] = 0
                     if event.key == pygame.K_LSHIFT:
                         self.shift = False
 
