@@ -42,7 +42,7 @@ class Tilemap:
     def render(self, surface, offset=[0, 0]):
 
         for tile in self.offgrid_tiles:
-            surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"] - offset[0], tile["position"][1] - offset[1]))
+            surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"][0] - offset[0], tile["position"][1] - offset[1]))
 
         for x in range(offset[0] // self.tile_size, (offset[0] + surface.get_width()) // self.tile_size + 1):
             for y in range(offset[1] // self.tile_size, (offset[1] + surface.get_height()) // self.tile_size + 1):
