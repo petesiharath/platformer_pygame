@@ -17,6 +17,8 @@ class PhysicsEntity:
         self.flip = False
         self.set_action("idle")
 
+        self.last_movement = [0, 0]
+
 
     def rect(self):
 
@@ -74,6 +76,8 @@ class PhysicsEntity:
         if movement[0] < 0:
             self.flip = True
 
+        self.last_movement = movement
+
         self.velocity[1] = min(5, self.velocity[1] + 0.1)
 
         if self.collisions["down"] or self.collisions["up"]:
@@ -124,7 +128,11 @@ class Player(PhysicsEntity):
                 self.set_action("run")
             else:
                 self.set_action("idle")
-
+                                
+        if self.velocity[0] > 0:
+            self.velocity[0] = max(self.velocity[0] - 0.1, 0)
+        else:
+            self.velocity[0] = min(self.velocity[0] + 0.1, 0)
 
     
     def jump(self):
