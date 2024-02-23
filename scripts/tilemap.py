@@ -52,6 +52,18 @@ class Tilemap:
                     tile = self.tilemap[location]
                     surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"][0] * self.tile_size - offset[0], tile["position"][1] * self.tile_size - offset[1]))
 
+
     def save(self, path):
+
         file = open(path, "w")
         json.dump({"tilemap": self.tilemap, "tile_size": self.tile_size, "offgrid": self.offgrid_tiles}, file)
+
+    
+    def load(self, path):
+
+        file = open(path, "r")
+        map_data = json.load(file)
+
+        self.tilemap = map_data["tilemap"]
+        self.tile_size = map_data["tile_size"]
+        self.offgrid_tiles = map_data["offgrid"]
