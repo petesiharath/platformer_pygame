@@ -2,7 +2,7 @@ import pygame
 import sys
 
 
-from scripts.utilities import load_image, load_images, Animation
+from scripts.utilities import load_image, load_images
 from scripts.tilemap import Tilemap
 
 RENDER_SCALE = 2.0
@@ -21,7 +21,7 @@ class Editor:
 
         self.assets = {
             "decor": load_images("tiles/decor"),
-            "largeDecor": load_images("tiles/large_decor"),
+            "large_decor": load_images("tiles/large_decor"),
             "grass": load_images("tiles/grass"),
             "stone": load_images("tiles/stone")
         }
