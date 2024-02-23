@@ -3,15 +3,14 @@ import pygame
 
 class PhysicsEntity:
 
-    def __init__(self, game, entityType, position, size):
+    def __init__(self, game, entity_type, position, size):
 
         self.game = game
-        self.type = entityType
+        self.type = entity_type
         self.position = list(position)
         self.size = size
         self.velocity = [0, 0]
         self.collisions = {"up": False, "down": False, "left": False, "right": False}
-        self.onfloor = False
 
         self.action = ""
         self.animation_offset = (-3, -3)
@@ -94,6 +93,7 @@ class Player(PhysicsEntity):
 
         super().__init__(game, "player", position, size)
         self.air_time = 0
+        self.jumps = 1
 
     
     def update(self, tilemap, movement = (0, 0)):
@@ -104,6 +104,7 @@ class Player(PhysicsEntity):
 
         if self.collisions["down"]:
             self.air_time = 0
+            self.jumps = 1
         
         if self.air_time > 4:
             self.set_action("jump")
@@ -113,3 +114,12 @@ class Player(PhysicsEntity):
 
         else:
             self.set_action("idle")
+
+    
+    def jump(self):
+
+        if self.jumps:
+            self.velocity[1] = -3
+            self.jumps -= 1
+            self.air_time = 5
+        

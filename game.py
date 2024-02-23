@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import math
 
 from scripts.entities import PhysicsEntity, Player
 from scripts.utilities import load_image, load_images, Animation
@@ -34,7 +35,7 @@ class Game:
             "player/jump": Animation(load_images("entities/player/jump")),
             "player/slide": Animation(load_images("entities/player/slide")),
             "player/wall_slide": Animation(load_images("entities/player/wall_slide")),
-            "particle/leaf": Animation(load_images("particles/leaf"))
+            "particle/leaf": Animation(load_images("particles/leaf"), image_duration=20, loop=False)
         }
 
         self.clouds = Clouds(self.assets["clouds"], count=16)
@@ -80,6 +81,8 @@ class Game:
             for particle in self.particles.copy():
                 kill = particle.update()
                 particle.render(self.display, offset=render_scroll)
+                if particle.type == "leaf":
+                    particle.position[0] += math.sin(particle.animation.frame * 0.035) * 0.3
                 if kill:
                     self.particles.remove(particle)
 
@@ -96,9 +99,8 @@ class Game:
                         self.player_movement[0] = 1
                     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.player_movement[1] = 1
-                    if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.player.onfloor:
-                        self.player.velocity[1] = -3
-                        self.player.onfloor = False
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
+                        self.player.jump()
 
                 if event.type == pygame.KEYUP:
 
