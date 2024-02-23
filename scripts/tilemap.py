@@ -1,4 +1,5 @@
 import pygame
+import json
 
 NEIGHBOUR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
 PHYSICS_TILES = {"grass", "stone"}
@@ -50,3 +51,7 @@ class Tilemap:
                 if location in self.tilemap:
                     tile = self.tilemap[location]
                     surface.blit(self.game.assets[tile["type"]][tile["variant"]], (tile["position"][0] * self.tile_size - offset[0], tile["position"][1] * self.tile_size - offset[1]))
+
+    def save(self, path):
+        file = open(path, "w")
+        json.dump({"tilemap": self.tilemap, "tile_size": self.tile_size, "offgrid": self.offgrid_tiles}, file)
