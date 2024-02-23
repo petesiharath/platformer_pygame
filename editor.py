@@ -54,6 +54,17 @@ class Editor:
             current_tile_image = self.assets[self.tile_list[self.tile_group]][self.tile_variant].copy()
             current_tile_image.set_alpha(100)
 
+            mouse_position = pygame.mouse.get_pos()
+            mouse_position = (mouse_position[0] / RENDER_SCALE, mouse_position[1] / RENDER_SCALE)
+            tile_position = (int((mouse_position[0] + self.scroll[0]) // self.tilemap.tile_size), int((mouse_position[1] + self.scroll[1]) // self.tilemap.tile_size))
+
+            if self.clicking:
+                self.tilemap.tilemap[str(tile_position[0]) + ";" + str(tile_position[1])] = {"type": self.tile_list[self.tile_group], "variant": self.tile_variant, "position": (tile_position)}
+            if self.right_clicking:
+                tile_location = str(tile_position[0]) + ";" + str(tile_position[1])
+                if tile_location in self.tilemap.tilemap:
+                    del self.tilemap.tilemap[tile_location]
+
             self.display.blit(current_tile_image, (5, 5))
 
             for event in pygame.event.get():
