@@ -39,6 +39,7 @@ class Editor:
         self.clicking = False
         self.right_clicking = False
         self.shift = False
+        self.ongrid = True
 
 
     def run(self):
@@ -60,9 +61,12 @@ class Editor:
             mouse_position = (mouse_position[0] / RENDER_SCALE, mouse_position[1] / RENDER_SCALE)
             tile_position = (int((mouse_position[0] + self.scroll[0]) // self.tilemap.tile_size), int((mouse_position[1] + self.scroll[1]) // self.tilemap.tile_size))
 
-            self.display.blit(current_tile_image, (tile_position[0] * self.tilemap.tile_size - self.scroll[0], tile_position[1] * self.tilemap.tile_size - self.scroll[1]))
+            if self.ongrid:
+                self.display.blit(current_tile_image, (tile_position[0] * self.tilemap.tile_size - self.scroll[0], tile_position[1] * self.tilemap.tile_size - self.scroll[1]))
+            else:
+                self.display.blit(current_tile_image, mouse_position)
 
-            if self.clicking:
+            if self.clicking and self.ongrid:
                 self.tilemap.tilemap[str(tile_position[0]) + ";" + str(tile_position[1])] = {"type": self.tile_list[self.tile_group], "variant": self.tile_variant, "position": (tile_position)}
 
             if self.right_clicking:
@@ -73,6 +77,7 @@ class Editor:
             self.display.blit(current_tile_image, (5, 5))
 
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
             
                     pygame.quit()
@@ -82,6 +87,8 @@ class Editor:
 
                     if event.button == 1:
                         self.clicking = True
+                        if not self.ongrid:
+                            self.tilemap.offgrid_tiles.append({"type": self.tile_list[self.tile_group], "variant": self.tile_variant, "position": (mouse_position[0] + self.scroll[0], mouse_position[1] + self.scroll[1])})
                     if event.button == 3:
                         self.right_clicking = True
 
@@ -117,6 +124,8 @@ class Editor:
                         self.camera_movement[3] = 1
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
+                    if event.key == pygame.K_g:
+                        self.ongrid = not self.ongrid
 
                 if event.type == pygame.KEYUP:
 
