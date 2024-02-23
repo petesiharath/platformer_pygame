@@ -75,8 +75,9 @@ class Game:
                         self.playerMovement[0] = 1
                     if event.key == pygame.K_d:
                         self.playerMovement[1] = 1
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w and self.player.onfloor:
                         self.player.velocity[1] = -3
+                        self.player.onfloor = False
 
                 if event.type == pygame.KEYUP:
 

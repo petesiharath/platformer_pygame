@@ -11,6 +11,7 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0, 0]
         self.collisions = {"up": False, "down": False, "left": False, "right": False}
+        self.onfloor = False
 
         self.action = ""
         self.animation_offset = (-3, -3)
@@ -61,6 +62,7 @@ class PhysicsEntity:
                 if frame_movement[1] > 0:
                     entity_rect.bottom = rect.top
                     self.collisions["down"] = True
+                    self.onfloor = True
 
                 if frame_movement[1] < 0:
                     entity_rect.top = rect.bottom
