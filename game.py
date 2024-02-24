@@ -49,7 +49,12 @@ class Game:
         self.player_movement = [0, 0]
 
         self.tilemap = Tilemap(self, tile_size=16)
-        self.tilemap.load("map.json")
+        self.load_level(0)
+
+
+    def load_level(self, map_id):
+        
+        self.tilemap.load("data/maps/" + str(map_id) + ".json")
 
         self.leaf_spawners = []
         for tree in self.tilemap.extract([("large_decor", 2)], keep=True):
@@ -64,6 +69,7 @@ class Game:
         
         self.projectiles = []
         self.particles = []
+        self.sparks = []
 
         self.scroll = [0, 0]
 
