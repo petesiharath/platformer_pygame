@@ -127,6 +127,14 @@ class Enemy(PhysicsEntity):
             else:
                 self.flip = not self.flip
             self.walking = max(0, self.walking - 1)
+            
+            if not self.walking:
+                distance = (self.game.player.position[0] - self.position[0], self.game.player.position[1] - self.position[1])
+                if abs(distance[1]) < 16:
+                    if self.flip and distance[0] < 0:
+                        self.game.projectiles.append([[self.rect().centerx - 7, self.rect().centery], -1.5, 0])
+                    if not self.flip and distance[0] > 0:
+                        self.game.projectiles.append([[self.rect().centerx + 7, self.rect().centery], 1.5, 0])
 
         elif random.random() < 0.01:
             self.walking = random.randint(30, 120)
