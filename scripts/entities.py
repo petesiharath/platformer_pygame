@@ -184,6 +184,9 @@ class Player(PhysicsEntity):
 
         self.air_time += 1
 
+        if self.air_time > 120:
+            self.game.dead += 1
+
         if self.collisions["down"]:
             self.air_time = 0
             self.jumps = 1
