@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import math
+import os
 
 from scripts.entities import PhysicsEntity, Player, Enemy
 from scripts.utilities import load_image, load_images, Animation
@@ -19,7 +20,8 @@ class Game:
 
         pygame.display.set_caption("Platformer")
         self.screen = pygame.display.set_mode((640, 480))
-        self.display = pygame.Surface((320, 240))
+        self.display = pygame.Surface((320, 240), pygame.SRCALPHA)
+        self.display_2 = pygame.Surface((320, 240))
 
         self.clock = pygame.time.Clock()
 
@@ -72,7 +74,7 @@ class Game:
                 self.player.air_time = 0
             else:
                 self.enemies.append(Enemy(self, spawner["position"], (8, 15)))
-        
+
         self.projectiles = []
         self.particles = []
         self.sparks = []
@@ -86,14 +88,15 @@ class Game:
 
         while True:
             
-            self.display.blit(self.assets["background"], (0, 0))
+            self.display.fill((0, 0, 0, 0))
+            self.display_2.blit(self.assets["background"], (0, 0))
 
             self.screenshake = max(0, self.screenshake - 1)
 
-            if not len(self.enemies):
+            if len(self.enemies) == 0:
                 self.transition += 1
                 if self.transition > 30:
-                    self.level += 1
+                    self.level = min(self.level + 1, len(os.listdir("data/maps")) - 1)
                     self.load_level(self.level)
 
             if self.transition < 0:
@@ -101,6 +104,8 @@ class Game:
 
             if self.dead:
                 self.dead += 1
+                if self.dead >= 10:
+                    self.transition = min(30, self.transition + 1)
                 if self.dead > 40:
                     self.load_level(self.level)
                     self.dead = 0
@@ -115,7 +120,7 @@ class Game:
                     self.particles.append(Particle(self, "leaf", position, velocity=[-0.1, 0.3], frame=random.randint(0, 20)))
 
             self.clouds.update()
-            self.clouds.render(self.display, offset=render_scroll)
+            self.clouds.render(self.display_2, offset=render_scroll)
 
             self.tilemap.render(self.display, offset=render_scroll)
 
@@ -160,6 +165,11 @@ class Game:
                 if kill:
                     self.sparks.remove(spark)
 
+            display_mask = pygame.mask.from_surface(self.display)
+            display_sillhouette = display_mask.to_surface(setcolor=(0, 0, 0, 180), unsetcolor=(0, 0, 0, 0))
+            for offset in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                self.display_2.blit(display_sillhouette, offset)
+
             for particle in self.particles.copy():
                 kill = particle.update()
                 particle.render(self.display, offset=render_scroll)
@@ -199,8 +209,10 @@ class Game:
                 transition_surface.set_colorkey((255, 255, 255))
                 self.display.blit(transition_surface, (0, 0))
 
+            self.display_2.blit(self.display, (0, 0))
+
             screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)
-            self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), screenshake_offset)
+            self.screen.blit(pygame.transform.scale(self.display_2, self.screen.get_size()), screenshake_offset)
             pygame.display.update()
             self.clock.tick(60)
 
