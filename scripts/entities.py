@@ -230,6 +230,7 @@ class Player(PhysicsEntity):
 
         if abs(self.dashing) > 50:
             self.velocity[0] = abs(self.dashing) / self.dashing * 8
+            self.velocity[1] = 0
             if abs(self.dashing) == 51:
                 self.velocity[0] *= 0.1
 
