@@ -4,7 +4,7 @@ import random
 import math
 import os
 
-from scripts.entities import PhysicsEntity, Player, Enemy
+from scripts.entities import Player, Enemy
 from scripts.utilities import load_image, load_images, Animation
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
@@ -229,6 +229,8 @@ class Game:
 
                     if event.button == 1:
                         self.player.kill()
+                    if event.button == 3:
+                        self.player.toggle_stealth()
 
             if self.transition:
                 transition_surface = pygame.Surface(self.display.get_size())
@@ -244,5 +246,5 @@ class Game:
             self.clock.tick(60)
 
 
-Platformer = Game()
-Platformer.run()
+platformer = Game()
+platformer.run()

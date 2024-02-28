@@ -180,6 +180,8 @@ class Player(PhysicsEntity):
         self.air_time = 0
         self.jumps = 1
         self.dashing = 0
+        self.stealth = False
+        self.stealth_timer = 120
 
     
     def update(self, tilemap, movement = (0, 0)):
@@ -242,6 +244,11 @@ class Player(PhysicsEntity):
         else:
             self.velocity[0] = min(self.velocity[0] + 0.1, 0)
 
+        if self.stealth:
+            self.stealth_timer = max(-120, self.stealth_timer - 1)
+        else:
+            self.stealth_timer = min(120, self.stealth_timer + 1)
+
 
     def render(self, surface, offset=[0, 0]):
 
@@ -253,14 +260,14 @@ class Player(PhysicsEntity):
 
         if self.wall_slide:
             if self.flip and self.last_movement[0] < 0:
-                self.velocity[0] = 3.5
+                self.velocity[0] = 2.5
                 self.velocity[1] = -2.5
                 self.air_time = 5
                 self.jumps = max(0, self.jumps - 1)
                 return True
 
             elif not self.flip and self.last_movement[0] > 0:
-                self.velocity[0] = -3.5
+                self.velocity[0] = -2.5
                 self.velocity[1] = -2.5
                 self.air_time = 5
                 self.jumps = max(0, self.jumps - 1)
@@ -285,13 +292,13 @@ class Player(PhysicsEntity):
 
     def kill(self):
         
-        if self.flip:
-            kill_zone = pygame.Rect(self.position[0] - self.size[0], self.position[1], self.size[0], self.size[1])
-        else:
-            kill_zone = pygame.Rect(self.position[0] + self.size[0], self.position[1], self.size[0], self.size[1])
-        
         for enemy in self.game.enemies:
-            if kill_zone.colliderect(enemy.rect()):
+            if self.flip:
+                distance = [self.position[0] - enemy.position[0], self.position[1] - enemy.position[1]]
+            else:
+                distance = [enemy.position[0] - self.position[0], enemy.position[1] - self.position[1]]
+
+            if 0 <= distance[0] < 16 and abs(distance[1]) < 10:
                 self.game.screenshake = max(16, self.game.screenshake)
                 self.game.sfx["hit"].play()
                 self.game.enemies.remove(enemy)
@@ -300,6 +307,11 @@ class Player(PhysicsEntity):
                     self.game.sparks.append(Spark(enemy.rect().center, angle, 2 + random.random()))
                     
                 self.game.sparks.append(Spark(enemy.rect().center, 0, 5 + random.random()))
-                self.game.sparks.append(Spark(enemy.rect().center, math.pi, 5 + random.random())
-                )
-                return True
+                self.game.sparks.append(Spark(enemy.rect().center, math.pi, 5 + random.random()))
+
+
+    def toggle_stealth(self):
+
+        if self.stealth_timer > 0:
+            self.stealth = not self.stealth
+    
