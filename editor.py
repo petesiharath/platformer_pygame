@@ -1,11 +1,11 @@
 import pygame
 import sys
 
-
 from scripts.utilities import load_image, load_images
 from scripts.tilemap import Tilemap
 
 RENDER_SCALE = 2.0
+
 
 class Editor:
 

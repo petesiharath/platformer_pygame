@@ -3,6 +3,7 @@ import os
 
 BASE_IMAGE_PATH = "data/images/"
 
+
 def load_image(path):
 
     image = pygame.image.load(BASE_IMAGE_PATH + path).convert()
@@ -18,6 +19,7 @@ def load_images(path):
         images.append(load_image(path + "/" + image_name))
     
     return images
+
 
 class Animation:
 
@@ -49,3 +51,4 @@ class Animation:
     def image(self):
 
         return self.images[int(self.frame / self.image_duration)]
+    

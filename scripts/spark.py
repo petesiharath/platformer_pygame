@@ -30,3 +30,4 @@ class Spark:
         ]
 
         pygame.draw.polygon(surface, (255, 255, 255), poly_points)
+
