@@ -225,6 +225,11 @@ class Game:
                     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.player_movement[1] = 0
             
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    if event.button == 1:
+                        self.player.kill()
+
             if self.transition:
                 transition_surface = pygame.Surface(self.display.get_size())
                 pygame.draw.circle(transition_surface, (255, 255, 255), (self.display.get_width() // 2, self.display.get_height() // 2), (30 - abs(self.transition)) * 8)

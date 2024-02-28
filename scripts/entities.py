@@ -281,3 +281,25 @@ class Player(PhysicsEntity):
                 self.dashing = -60
             else:
                 self.dashing = 60
+
+
+    def kill(self):
+        
+        if self.flip:
+            kill_zone = pygame.Rect(self.position[0] - self.size[0], self.position[1], self.size[0], self.size[1])
+        else:
+            kill_zone = pygame.Rect(self.position[0] + self.size[0], self.position[1], self.size[0], self.size[1])
+        
+        for enemy in self.game.enemies:
+            if kill_zone.colliderect(enemy.rect()):
+                self.game.screenshake = max(16, self.game.screenshake)
+                self.game.sfx["hit"].play()
+                self.game.enemies.remove(enemy)
+                for _ in range(30):
+                    angle = random.random() * math.pi * 2
+                    self.game.sparks.append(Spark(enemy.rect().center, angle, 2 + random.random()))
+                    
+                self.game.sparks.append(Spark(enemy.rect().center, 0, 5 + random.random()))
+                self.game.sparks.append(Spark(enemy.rect().center, math.pi, 5 + random.random())
+                )
+                return True
